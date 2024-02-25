@@ -1,0 +1,54 @@
+Server 1 (Web Server):
+
+Nginx is installed on this server to handle incoming HTTP requests.
+It serves static content, manages SSL/TLS termination, and forwards dynamic content requests to the load balancer.
+Server 2 (Application Server):
+
+This server hosts the application code (your code base).
+It handles dynamic content generation, interacts with the database, and processes business logic.
+Gunicorn is used as the application server.
+Server 3 (Database Server - Primary):
+
+MySQL is configured as the primary database server, responsible for read and write operations.
+Load Balancer (HAproxy):
+
+The load balancer distributes incoming traffic across multiple servers to ensure better performance, scalability, and high availability.
+HAproxy is configured with a round-robin distribution algorithm, ensuring that each server gets an equal share of requests.
+Set of Application Files (Code Base):
+
+The code base consists of web application files, including HTML, CSS, JavaScript, and server-side code.
+These files are stored on the Application Server and executed to generate dynamic content.
+Database (MySQL - Replica):
+
+MySQL is configured in a Primary-Replica (Master-Slave) cluster.
+The Replica database server is synchronized with the Primary to provide redundancy and handle read-only queries, reducing the load on the Primary server.
+Specifics:
+
+Load Balancer Configuration:
+
+Round-robin distribution algorithm is used by HAproxy to distribute incoming requests equally among the Web and Application servers.
+This ensures a balanced load and prevents any single server from becoming a bottleneck.
+Active-Active vs. Active-Passive Setup:
+
+The infrastructure is configured in an Active-Active setup where both the Web and Application servers are actively serving traffic.
+In an Active-Passive setup, one set of servers remains inactive until a failure occurs, leading to higher resource utilization in an Active-Active setup.
+Database Primary-Replica Cluster:
+
+The Primary database server handles both read and write operations.
+The Replica database server replicates data from the Primary and handles read-only queries, distributing the load and providing fault tolerance.
+Automatic failover mechanisms can be implemented to promote a Replica to the Primary in case of Primary server failure.
+Difference Between Primary and Replica:
+
+The Primary node is responsible for handling write operations and ensuring data consistency.
+The Replica node serves read-only queries and provides a backup in case the Primary fails, enhancing scalability and fault tolerance.
+Issues with the Infrastructure:
+
+Single Points of Failure (SPOF):
+
+The Web, Application, and Database servers individually can still be considered SPOFs. Implementing redundancy and failover mechanisms for each component can mitigate this.
+Security Issues:
+
+Lack of firewall and HTTPS introduces security vulnerabilities. Implementing firewalls and enforcing HTTPS with proper SSL/TLS configurations is essential for securing the infrastructure.
+No Monitoring:
+
+The absence of monitoring tools makes it challenging to identify and address performance issues or failures promptly. Implementing monitoring solutions is crucial for proactive maintenance and issue resolution.

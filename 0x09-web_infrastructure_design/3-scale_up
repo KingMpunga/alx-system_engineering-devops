@@ -1,0 +1,40 @@
+Server:
+
+A dedicated server that hosts the entire web application infrastructure.
+This server acts as the foundation for the web application, providing the necessary resources and hosting components.
+Load Balancer (HAProxy):
+
+Configured as a cluster with redundancy for high availability.
+Distributes incoming traffic among multiple servers to enhance performance, scalability, and fault tolerance.
+Web Server:
+
+Responsible for handling HTTP requests, serving static content, and managing SSL/TLS termination.
+Nginx is used as the web server to efficiently process and respond to incoming requests.
+Application Server:
+
+Hosts the application code and handles dynamic content generation.
+Gunicorn is utilized as the application server to execute server-side code and process business logic.
+Database:
+
+A separate server is dedicated to hosting the database (e.g., MySQL or another RDBMS).
+The database server stores and retrieves data, ensuring persistence for the web application.
+Specifics
+Load Balancer (HAProxy) Cluster:
+Why Add a Load Balancer:
+The load balancer distributes incoming traffic, preventing a single server from becoming a bottleneck.
+Enhances fault tolerance and scalability by evenly distributing requests among multiple servers.
+HAProxy Cluster Configuration:
+HAProxy is configured as a cluster to ensure high availability.
+Redundancy is established, meaning if one load balancer fails, another can seamlessly take over.
+Web Server:
+Why Use Nginx as the Web Server:
+Nginx is chosen for its efficiency, low resource usage, and high performance.
+It excels in serving static content and efficiently handling a large number of concurrent connections.
+Application Server:
+Why Include an Application Server:
+Separating the web server from the application server allows for scalability and efficient resource utilization.
+Gunicorn, as the application server, executes server-side code, processes dynamic content, and supports concurrent connections.
+Database Server:
+Why Separate Database Server:
+Isolating the database on its dedicated server enhances security, scalability, and allows for optimized resource allocation.
+Provides a centralized location for data storage and retrieval.

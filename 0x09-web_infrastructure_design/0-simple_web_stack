@@ -1,0 +1,46 @@
+Server (IP: 8.8.8.8):
+
+The physical or virtual machine responsible for hosting the entire web infrastructure.
+Domain Name (www.foobar.com):
+
+A user wanting to access the website first types www.foobar.com into their web browser.
+The domain name serves as a human-readable address that maps to the server's IP address (8.8.8.8).
+DNS Record (www):
+
+The "www" in www.foobar.com is a subdomain and typically represented by a CNAME (Canonical Name) DNS record pointing to the domain's main record. For example:
+objectivec
+Copy code
+www    IN    CNAME    foobar.com.
+Web Server (Nginx):
+
+The web server (Nginx) is responsible for handling incoming HTTP requests.
+It listens for requests on port 80 and serves static content, manages SSL/TLS termination, and forwards dynamic content requests to the application server.
+Application Server:
+
+This server runs the application code (your code base).
+It handles dynamic content generation, interacts with the database, and processes business logic.
+Common choices for application servers include Gunicorn, uWSGI, or application server modules like mod_wsgi for Apache.
+Application Files (Code Base):
+
+The code base consists of the web application files, including HTML, CSS, JavaScript, and server-side code (e.g., Python, PHP, Ruby).
+These files are stored on the server and are executed by the application server to generate dynamic content.
+Database (MySQL):
+
+MySQL is used as the relational database management system (RDBMS).
+It stores and retrieves data, allowing the application to persist and manage information.
+Communication with User's Computer:
+
+The communication between the server and the user's computer is facilitated through the HTTP or HTTPS protocol.
+When a user requests www.foobar.com, their browser sends an HTTP request to the server, and the server responds with the appropriate content.
+Issues with the Infrastructure:
+
+Single Point of Failure (SPOF):
+
+Since all components are hosted on a single server, any failure in that server (hardware, software, or network) could lead to downtime for the entire website.
+Downtime During Maintenance:
+
+Any maintenance activities, such as deploying new code that requires the web server to be restarted, will result in downtime for the website.
+Limited Scalability:
+
+The infrastructure is not easily scalable to handle increased traffic. If traffic spikes, the single server may become a bottleneck, leading to performance issues or downtime.
+To address these issues, a more robust infrastructure design would involve distributed systems, load balancing, redundancy, and potentially cloud services to ensure high availability and scalability.

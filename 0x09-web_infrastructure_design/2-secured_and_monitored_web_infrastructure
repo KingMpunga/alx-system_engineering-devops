@@ -1,0 +1,60 @@
+Server 1 (Web Server):
+
+Nginx is installed on this server to handle incoming HTTP and HTTPS requests.
+A firewall is configured to control and monitor incoming and outgoing traffic.
+Server 2 (Application Server):
+
+This server hosts the application code (your code base).
+A firewall is configured to control and monitor incoming and outgoing traffic.
+Server 3 (Database Server):
+
+MySQL is configured to serve as the database.
+A firewall is configured to control and monitor incoming and outgoing traffic.
+Firewalls (3 in total):
+
+Firewalls are added to control and secure traffic between servers and the internet.
+They restrict unauthorized access, prevent malicious activities, and enhance overall network security.
+SSL Certificate:
+
+An SSL certificate is added to enable HTTPS for www.foobar.com.
+It encrypts the data in transit, ensuring secure communication between the user's browser and the web server.
+Monitoring Clients (Data Collectors):
+
+Monitoring clients are installed on each server to collect data and send it to a monitoring service (e.g., Sumo Logic).
+They capture metrics, logs, and other relevant information to monitor the health, performance, and security of the infrastructure.
+Specifics:
+
+Firewalls:
+
+Control and monitor incoming and outgoing traffic.
+Prevent unauthorized access, protect against cyber threats, and enhance network security.
+SSL Certificate:
+
+Enables HTTPS to encrypt data in transit.
+Secures user data, passwords, and other sensitive information from interception or tampering during transmission.
+Monitoring:
+
+Used to proactively identify and address performance issues, security threats, and other anomalies.
+Enables real-time and historical analysis of system metrics, logs, and events to ensure optimal performance and security.
+Monitoring Data Collection:
+
+Monitoring clients collect data such as system metrics, logs, and events from each server.
+Data is sent to a centralized monitoring service, providing a holistic view of the entire infrastructure's health and performance.
+Monitoring Web Server QPS (Queries Per Second):
+
+To monitor web server QPS, set up monitoring tools to track incoming HTTP requests and responses.
+Utilize metrics like Nginx request rates and response times to identify patterns, spikes, or anomalies in web server traffic.
+Issues with the Infrastructure:
+
+Terminating SSL at Load Balancer Level:
+
+Terminating SSL at the load balancer level can expose unencrypted traffic between the load balancer and the internal servers.
+It's recommended to terminate SSL at the application server or use end-to-end encryption to maintain security throughout the entire communication chain.
+Single MySQL Server Accepting Writes:
+
+Having only one MySQL server capable of accepting writes introduces a single point of failure for write operations.
+Implementing a Primary-Replica cluster with MySQL can provide redundancy and improve fault tolerance.
+Identical Servers for All Components:
+
+Having servers with identical components may lead to uniform vulnerabilities.
+Diversifying server types, versions, or operating systems can mitigate risks associated with common vulnerabilities affecting all servers simultaneously.
