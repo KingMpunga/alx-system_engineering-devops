@@ -1,7 +1,21 @@
-#!/usr/bin/env bash
-# Installs nginx server
+#!/bin/bash
+
+# Install nginx with '-y' flag to automatically confirm installation prompts
 apt-get update
-apt-get -y install nginx
-ufw allow 'Nginx HTTP'
-echo "Hello World!" > /var/www/html/index.html
-service nginx start
+apt-get install -y nginx
+
+# Check if nginx is installed
+if ! [ -x "$(command -v nginx)" ]; then
+  echo 'Error: nginx is not installed.' >&2
+  exit 1
+fi
+
+# Configure nginx to listen on port 80 and return "Hello World!" on root GET request
+echo "Hello World!" > /usr/share/nginx/html/index.html
+
+# Restart nginx
+service nginx restart
+
+# Test nginx response
+curl -s localhost
+
