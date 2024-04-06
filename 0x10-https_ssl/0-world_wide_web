@@ -1,18 +1,35 @@
-#!/usr/bin/env bash
-# write a Bash script that will display information about the subdomains
+#!/bin/bash
 
-dns_config () {
-    script=$(dig "$2"."$1" | grep -A1 'ANSWER SECTION:' | tr '\t' '\n' | tail -2 | tr '\n' ' ')
-    echo "$2 $script" | awk '{print "The subdomain " $1 " is a " $2 " record and points to " $3}'
+# Function to display information about a subdomain
+display_info() {
+    local subdomain=$1
+    local domain=$2
+    local result=$(dig $subdomain.$domain | awk '/ANSWER SECTION/{getline; print}')
+    local record_type=$(echo $result | awk '{print $3}')
+    local destination=$(echo $result | awk '{print $5}')
+    echo "The subdomain $subdomain is a $record_type record and points to $destination"
 }
 
-if [ "$#" == 1 ]
-then
-  dns_config "$1" "www"
-  dns_config "$1" "lb-01"
-  dns_config "$1" "web-01"
-  dns_config "$1" "web-02"
-elif [ "$#" == 2 ]
-then
-  dns_config "$1" "$2"
+# Main function to handle input arguments and display information accordingly
+main() {
+    local domain=$1
+    local subdomain=$2
+
+    if [ -z "$subdomain" ]; then
+        subdomains=("www" "lb-01" "web-01" "web-02")
+        for sub in "${subdomains[@]}"; do
+            display_info $sub $domain
+        done
+    else
+        display_info $subdomain $domain
+    fi
+}
+
+# Check if arguments are provided
+if [ "$#" -eq 0 ]; then
+    echo "Error: Domain name is mandatory"
+    exit 1
 fi
+
+main "$@"
+
