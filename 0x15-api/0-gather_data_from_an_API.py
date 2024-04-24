@@ -1,31 +1,38 @@
 #!/usr/bin/python3
-"""Accessing a REST API for todo lists of employees"""
-
-import requests
 import sys
+import requests
 
+def fetch_employee_todo_progress(employee_id):
+    base_url = "https://jsonplaceholder.typicode.com"
+    user_url = f"{base_url}/users/{employee_id}"
+    todo_url = f"{base_url}/todos?userId={employee_id}"
 
-if __name__ == '__main__':
-    employeeId = sys.argv[1]
-    baseUrl = "https://jsonplaceholder.typicode.com/users"
-    url = baseUrl + "/" + employeeId
+    try:
+        user_response = requests.get(user_url)
+        user_response.raise_for_status()
+        user_data = user_response.json()
+        employee_name = user_data['name']
 
-    response = requests.get(url)
-    employeeName = response.json().get('name')
+        todo_response = requests.get(todo_url)
+        todo_response.raise_for_status()
+        todo_data = todo_response.json()
 
-    todoUrl = url + "/todos"
-    response = requests.get(todoUrl)
-    tasks = response.json()
-    done = 0
-    done_tasks = []
+        completed_tasks = [task['title'] for task in todo_data if task['completed']]
+        total_tasks = len(todo_data)
+        num_completed_tasks = len(completed_tasks)
 
-    for task in tasks:
-        if task.get('completed'):
-            done_tasks.append(task)
-            done += 1
+        print(f"Employee {employee_name} is done with tasks({num_completed_tasks}/{total_tasks}):")
+        for task in completed_tasks:
+            print(f"\t{task}")
 
-    print("Employee {} is done with tasks({}/{}):"
-          .format(employeeName, done, len(tasks)))
+    except requests.exceptions.RequestException as e:
+        print("Error fetching data:", e)
 
-    for task in done_tasks:
-        print("\t {}".format(task.get('title')))
+if __name__ == "__main__":
+    if len(sys.argv) != 2:
+        print("Usage: python3 script_name.py employee_id")
+        sys.exit(1)
+
+    employee_id = int(sys.argv[1])
+    fetch_employee_todo_progress(employee_id)
+
